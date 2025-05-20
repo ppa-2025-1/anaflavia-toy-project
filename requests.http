@@ -38,3 +38,23 @@ Content-Type: application/json
     ],
     "company": "potato inc"
 }
+
+
+
+### Get all tickets
+GET /api/v1/tickets HTTP/1.1
+Host: localhost:8080
+Accept: application/json
+
+
+### Get a ticket by ID
+POST /api/v1/tickets HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+    "action": "Formatar",
+    "object": "Notebook",
+    "details": "Formatar o notebook do cliente",
+    "userId": 1
+}

@@ -8,11 +8,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.example.demo.dto.NewTicket;
 import com.example.demo.dto.NewUser;
 import com.example.demo.model.entity.Profile;
 import com.example.demo.model.entity.Role;
+import com.example.demo.model.entity.Ticket;
 import com.example.demo.model.entity.User;
 import com.example.demo.repository.RoleRepository;
+import com.example.demo.repository.TicketRepository;
 import com.example.demo.repository.UserRepository;
 
 // classe que representa o negócio
@@ -21,16 +24,19 @@ public class UserBusiness {
     
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private TicketRepository ticketRepository;
     private BCryptPasswordEncoder passwordEncoder;
     private Set<String> defaultRoles;
 
     public UserBusiness(
             UserRepository userRepository, 
             RoleRepository roleRepository,
+            TicketRepository ticketRepository,
             @Value("${app.user.default.roles}") Set<String> defaultRoles) {
 
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;   
+        this.ticketRepository = ticketRepository;
         this.passwordEncoder = new BCryptPasswordEncoder();
         this.defaultRoles = defaultRoles;
     }
@@ -95,7 +101,12 @@ public class UserBusiness {
         profile.setUser(user);
         user.setProfile(profile);
 
+
         userRepository.save(user); 
+
+        TicketBusiness ticketBusiness = new TicketBusiness(ticketRepository, userRepository);
+        NewTicket newTicket = new NewTicket("create", "e-mail", "Criar e-mail institucional para usuário novo", user.getId());
+        ticketBusiness.criarTicket(newTicket);
     }
 
     private String generateHandle(String email) {
