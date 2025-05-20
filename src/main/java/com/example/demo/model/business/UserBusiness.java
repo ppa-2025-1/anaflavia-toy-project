@@ -24,19 +24,19 @@ public class UserBusiness {
     
     private UserRepository userRepository;
     private RoleRepository roleRepository;
-    private TicketRepository ticketRepository;
+    private TicketBusiness ticketBusiness;
     private BCryptPasswordEncoder passwordEncoder;
     private Set<String> defaultRoles;
 
     public UserBusiness(
             UserRepository userRepository, 
             RoleRepository roleRepository,
-            TicketRepository ticketRepository,
+            TicketBusiness ticketBusiness,
             @Value("${app.user.default.roles}") Set<String> defaultRoles) {
 
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;   
-        this.ticketRepository = ticketRepository;
+        this.ticketBusiness = ticketBusiness;
         this.passwordEncoder = new BCryptPasswordEncoder();
         this.defaultRoles = defaultRoles;
     }
@@ -104,9 +104,8 @@ public class UserBusiness {
 
         userRepository.save(user); 
 
-        TicketBusiness ticketBusiness = new TicketBusiness(ticketRepository, userRepository);
         NewTicket newTicket = new NewTicket("create", "e-mail", "Criar e-mail institucional para usuário novo", user.getId());
-        ticketBusiness.criarTicket(newTicket);
+        this.ticketBusiness.criarTicket(newTicket);
     }
 
     private String generateHandle(String email) {

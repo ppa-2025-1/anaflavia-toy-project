@@ -1,6 +1,7 @@
 package com.example.demo.model.entity;
 
 import com.example.demo.model.enums.TicketStatusEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -15,7 +16,9 @@ public class Ticket extends BaseEntity {
     private String object;
     private String details;
     private TicketStatusEnum status;
+
     @ManyToOne
+    @JsonIgnore
     private User user;
 
     public String getAction() {
