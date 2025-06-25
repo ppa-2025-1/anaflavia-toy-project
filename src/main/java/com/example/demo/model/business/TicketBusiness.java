@@ -42,19 +42,24 @@ public class TicketBusiness {
         ticketRepository.save(ticket);
     }
 
-    public void atualizarStatusTicket(Ticket ticket) {
-        // BUSINESS RULES
-        // DOMAIN RULES
-        // if (newUser.email() == null || newUser.password() == null) {
-        //     throw new IllegalArgumentException("Email e senha são obrigatórios");
-        // }
+    public Ticket atualizarStatusTicket(Integer id, TicketStatusEnum novoStatus) {
+    Ticket ticket = ticketRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Ticket não encontrado"));
 
-        // if (newUser.email().isEmpty() || newUser.password().isEmpty()) {
-        //     throw new IllegalArgumentException("Email e senha não podem estar vazios");
-        // }
+    ticket.setStatus(novoStatus);
+    ticketRepository.save(ticket);
 
-        // ticketRepository.(ticket);
+    return ticket;
+}
+
+    public Ticket buscarTicket(Integer id) {
+        return ticketRepository.findById(id).orElse(null);
     }
+
+    // public Ticket updateStaTicket(Ticket ticket, TicketStatusEnum status) {
+    //     // Implementar lógica de atualização de status do ticket
+    //     return ticketRepository.updateStatusTicket(ticket, status);
+    // }
 
 
     

@@ -47,7 +47,7 @@ Host: localhost:8080
 Accept: application/json
 
 
-### Get a ticket by ID
+### Create a new ticket
 POST /api/v1/tickets HTTP/1.1
 Host: localhost:8080
 Content-Type: application/json
@@ -58,3 +58,16 @@ Content-Type: application/json
     "details": "Formatar o notebook do cliente",
     "userId": 1
 }
+
+### Get a ticket by ID
+
+GET /api/v1/tickets/buscar/1 HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+
+### Update a ticket by ID
+PATCH http://localhost:8080/api/v1/tickets/mudar/1?status=FECHADO
+Content-Type: application/json
+Host: localhost:8080
+

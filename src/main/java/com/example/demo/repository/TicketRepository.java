@@ -8,7 +8,7 @@ import com.example.demo.model.entity.Ticket;
 public interface TicketRepository extends BaseRepository<Ticket, Integer> {
     
     // validar isso aqui
-    Optional <Ticket> findById(Integer id);
+    // Optional <Ticket> findById(Integer id);
 
     // Set<Ticket> findAll(String status);
 
