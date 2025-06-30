@@ -51,13 +51,6 @@ public class TicketController extends AbstractController {
         NewTicket newTicket) {
         ticketBusiness.criarTicket(newTicket);
     }
-
-    
-    // @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    // public ResponseEntity<Ticket> buscarTicket(Integer id) {
-    //     return ResponseEntity.ok(ticketRepository.findById(id).orElse(null));
-    // }
-
     
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Ticket>> getTickets() {
@@ -76,10 +69,10 @@ public class TicketController extends AbstractController {
 public ResponseEntity<Ticket> alterarStatusTicket(
         @PathVariable("id") Integer id,
         @RequestParam("status") String status) {
-
     TicketStatusEnum novoStatus;
     try {
         novoStatus = TicketStatusEnum.valueOf(status.toUpperCase());
+        System.out.println("==> Novo Status: " + novoStatus);
     } catch (IllegalArgumentException e) {
         return ResponseEntity.badRequest().build();
     }

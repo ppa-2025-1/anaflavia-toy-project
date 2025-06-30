@@ -67,7 +67,7 @@ Content-Type: application/json
 
 
 ### Update a ticket by ID
-PATCH http://localhost:8080/api/v1/tickets/mudar/1?status=FECHADO
+PATCH http://localhost:8080/api/v1/tickets/mudar/1?status=RESOLVED
 Content-Type: application/json
 Host: localhost:8080
 

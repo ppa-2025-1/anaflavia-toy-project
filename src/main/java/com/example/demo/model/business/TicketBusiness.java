@@ -28,7 +28,6 @@ public class TicketBusiness {
 
     public void criarTicket(NewTicket newTicket) {
 
-        System.out.println("CHEGUEI AQUI!!!!!!!!");
         System.out.println("new ticket: " + newTicket.toString());
         Ticket ticket = new Ticket();
         ticket.setAction(newTicket.action());
@@ -43,24 +42,17 @@ public class TicketBusiness {
     }
 
     public Ticket atualizarStatusTicket(Integer id, TicketStatusEnum novoStatus) {
-    Ticket ticket = ticketRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Ticket não encontrado"));
+        Ticket ticket = ticketRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Ticket não encontrado"));
 
-    ticket.setStatus(novoStatus);
-    ticketRepository.save(ticket);
+        ticket.setStatus(novoStatus);
+        ticketRepository.save(ticket);
 
-    return ticket;
-}
+        return ticket;
+    }
 
     public Ticket buscarTicket(Integer id) {
         return ticketRepository.findById(id).orElse(null);
     }
 
-    // public Ticket updateStaTicket(Ticket ticket, TicketStatusEnum status) {
-    //     // Implementar lógica de atualização de status do ticket
-    //     return ticketRepository.updateStatusTicket(ticket, status);
-    // }
-
-
-    
 }
