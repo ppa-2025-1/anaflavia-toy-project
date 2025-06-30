@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 // import com.example.demo.dto.NewTicket;
 import com.example.demo.dto.NewUser;
+import com.example.demo.facade.TicketFacade;
 import com.example.demo.model.entity.Profile;
 import com.example.demo.model.entity.Role;
 // import com.example.demo.model.entity.Ticket;
@@ -27,18 +28,20 @@ public class UserBusiness {
     // private TicketBusiness ticketBusiness;
     private BCryptPasswordEncoder passwordEncoder;
     private Set<String> defaultRoles;
+    private final TicketFacade ticketFacade;
 
     public UserBusiness(
             UserRepository userRepository, 
+            TicketFacade ticketFacade,
             RoleRepository roleRepository,
-            // TicketBusiness ticketBusiness,
             @Value("${app.user.default.roles}") Set<String> defaultRoles) {
-
+        System.out.println("Cheguei no business");
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;   
         // this.ticketBusiness = ticketBusiness;
         this.passwordEncoder = new BCryptPasswordEncoder();
         this.defaultRoles = defaultRoles;
+        this.ticketFacade = ticketFacade;
     }
 
 
@@ -103,6 +106,8 @@ public class UserBusiness {
 
 
         userRepository.save(user); 
+
+        ticketFacade.criarTicketParaNovoUsuario(user.getId(), user.getEmail());
 
         // NewTicket newTicket = new NewTicket("create", "e-mail", "Criar e-mail institucional para usuário novo", user.getId());
         // this.ticketBusiness.criarTicket(newTicket);

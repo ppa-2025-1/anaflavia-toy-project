@@ -16,11 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.NewTicket;
 import com.example.demo.model.business.TicketBusiness;
-import com.example.demo.model.business.UserBusiness;
 import com.example.demo.model.entity.Ticket;
 import com.example.demo.model.enums.TicketStatusEnum;
 import com.example.demo.repository.TicketRepository;
-import com.example.demo.repository.UserRepository;
 
 import jakarta.validation.Valid;
 
@@ -33,24 +31,33 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class TicketController extends AbstractController {
 
     private final TicketRepository ticketRepository;
-    private final UserRepository userRepository;
     private final TicketBusiness ticketBusiness;
 
-    public TicketController(TicketRepository ticketRepository, TicketBusiness ticketBusiness, UserRepository userRepository) {
+    public TicketController(TicketRepository ticketRepository, TicketBusiness ticketBusiness) {
         this.ticketRepository = ticketRepository;
-        this.userRepository = userRepository;
-        this.ticketBusiness = new TicketBusiness(ticketRepository, userRepository);
+        this.ticketBusiness = ticketBusiness;
     
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(code = HttpStatus.CREATED)
-    public void createTicket(
+    public ResponseEntity<Ticket>  createTicket(
         @Valid
         @RequestBody
         NewTicket newTicket) {
-        ticketBusiness.criarTicket(newTicket);
+        Ticket ticket = ticketBusiness.criarTicket(newTicket);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ticket);
     }
+
+    /*
+     * @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Ticket> createTicket(
+            @Valid @RequestBody NewTicket newTicket) {
+        Ticket ticket = ticketBusiness.criarTicket(newTicket);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ticket);
+    }
+     * 
+     */
     
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Ticket>> getTickets() {
@@ -66,25 +73,24 @@ public class TicketController extends AbstractController {
     }
 
     @PatchMapping(value = "/mudar/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-public ResponseEntity<Ticket> alterarStatusTicket(
+    public ResponseEntity<Ticket> alterarStatusTicket(
         @PathVariable("id") Integer id,
         @RequestParam("status") String status) {
-    TicketStatusEnum novoStatus;
-    try {
-        novoStatus = TicketStatusEnum.valueOf(status.toUpperCase());
-        System.out.println("==> Novo Status: " + novoStatus);
-    } catch (IllegalArgumentException e) {
-        return ResponseEntity.badRequest().build();
-    }
+        
+            TicketStatusEnum novoStatus;
+        try {
+            novoStatus = TicketStatusEnum.valueOf(status.toUpperCase());
+            System.out.println("==> Novo Status: " + novoStatus);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
 
-    try {
-        Ticket ticketAtualizado = ticketBusiness.atualizarStatusTicket(id, novoStatus);
-        return ResponseEntity.ok(ticketAtualizado);
-    } catch (IllegalArgumentException e) {
-        return ResponseEntity.notFound().build();
+        try {
+            Ticket ticketAtualizado = ticketBusiness.atualizarStatusTicket(id, novoStatus);
+            return ResponseEntity.ok(ticketAtualizado);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
-}
-
-    
     
 }

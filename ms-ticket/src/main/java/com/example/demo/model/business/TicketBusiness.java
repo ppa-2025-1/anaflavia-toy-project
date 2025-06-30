@@ -8,25 +8,30 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.demo.dto.NewTicket;
+import com.example.demo.dto.UserResponse;
+import com.example.demo.facade.UserFacade;
 import com.example.demo.model.entity.Ticket;
-import com.example.demo.model.entity.User;
 import com.example.demo.model.enums.TicketStatusEnum;
 import com.example.demo.repository.TicketRepository;
-import com.example.demo.repository.UserRepository;
 
 @Business
 public class TicketBusiness {
 
     private TicketRepository ticketRepository;
-    private UserRepository userRepository;
+    private final UserFacade userFacade;
 
 
-    public TicketBusiness(TicketRepository ticketRepository, UserRepository userRepository) {
+    public TicketBusiness(TicketRepository ticketRepository, UserFacade userFacade) {
         this.ticketRepository = ticketRepository;
-        this.userRepository = userRepository;
+        this.userFacade = userFacade;
     }
 
-    public void criarTicket(NewTicket newTicket) {
+    public Ticket criarTicket(NewTicket newTicket) {
+
+        UserResponse user = userFacade.getUserById(newTicket.userId());
+        if (user == null) {
+            throw new RuntimeException("Usuário não encontrado");
+        }
 
         System.out.println("new ticket: " + newTicket.toString());
         Ticket ticket = new Ticket();
@@ -34,11 +39,12 @@ public class TicketBusiness {
         ticket.setObject(newTicket.object());
         ticket.setDetails(newTicket.details());
         ticket.setStatus(TicketStatusEnum.OPEN);
-        User user = userRepository.findById(newTicket.userId()).orElseThrow(() -> new IllegalArgumentException("User not found"));
-        System.out.println("user: " + user.toString());
-        ticket.setUser(user);
+        ticket.setUserId(user.getId());
+        // User user = userRepository.findById(newTicket.userId()).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        // System.out.println("user: " + user.toString());
+        // ticket.setUser(user);
 
-        ticketRepository.save(ticket);
+        return ticketRepository.save(ticket);
     }
 
     public Ticket atualizarStatusTicket(Integer id, TicketStatusEnum novoStatus) {

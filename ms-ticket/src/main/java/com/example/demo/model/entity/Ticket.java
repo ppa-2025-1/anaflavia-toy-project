@@ -17,9 +17,9 @@ public class Ticket extends BaseEntity {
     private String details;
     private TicketStatusEnum status;
 
-    @ManyToOne
-    @JsonIgnore
-    private User user;
+    // @ManyToOne
+    // @JsonIgnore
+    private Integer userId;
 
     public String getAction() {
         return action;
@@ -45,11 +45,11 @@ public class Ticket extends BaseEntity {
     public void setStatus(TicketStatusEnum status) {
         this.status = status;
     }
-    public User getUser() {
-        return user;
+    public Integer getUserId() {
+        return userId;
     }
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
     
 }

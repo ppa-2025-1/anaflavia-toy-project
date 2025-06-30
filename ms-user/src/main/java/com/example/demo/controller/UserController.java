@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.NewUser;
+import com.example.demo.dto.UserResponse;
 import com.example.demo.model.business.UserBusiness;
 import com.example.demo.model.entity.User;
 import com.example.demo.repository.UserRepository;
@@ -52,7 +54,7 @@ public class UserController extends AbstractController {
         @Valid
         @RequestBody
         NewUser newUser) {
-
+        System.out.println("Creating new user -  controller: " + newUser);
         userBusiness.criarUsuario(newUser);
 
     }
@@ -61,4 +63,16 @@ public class UserController extends AbstractController {
     public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok(userRepository.findAll());
     }
+
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserResponse> getUserById(@PathVariable("id") Integer id) {
+        return userRepository.findById(id)
+            .map(user -> ResponseEntity.ok(new UserResponse(
+                    user.getId(),
+                    user.getProfile(),
+                    user.getEmail()
+            )))
+            .orElse(ResponseEntity.notFound().build());
+    }
+
 }

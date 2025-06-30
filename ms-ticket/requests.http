@@ -1,55 +1,12 @@
-
-### Get all users
-
-GET /api/v1/users HTTP/1.1
-Host: localhost:8080
-Accept: application/json
-
-### Create a new User
-
-POST /api/v1/users HTTP/1.1
-Host: localhost:8080
-Content-Type: application/json
-
-{
-    "email": "batata@potato.com",
-    "password": "1234RT56",
-    "handle": "papas",
-    "name": "Kartofel",
-    "roles": [
-        "ROLE_USER"
-    ],
-    "company": "potato inc"
-}
-
-### Tenta criar um usuário inválido
-
-POST /api/v1/users HTTP/1.1
-Host: localhost:8080
-Content-Type: application/json
-
-{
-    "email": "",
-    "password": "1234RT56",
-    "handle": "papas",
-    "name": "Kartofel",
-    "roles": [
-        "ROLE_USER"
-    ],
-    "company": "potato inc"
-}
-
-
-
 ### Get all tickets
 GET /api/v1/tickets HTTP/1.1
-Host: localhost:8080
+Host: localhost:8082
 Accept: application/json
 
 
 ### Create a new ticket
 POST /api/v1/tickets HTTP/1.1
-Host: localhost:8080
+Host: localhost:8082
 Content-Type: application/json
 
 {
@@ -62,12 +19,12 @@ Content-Type: application/json
 ### Get a ticket by ID
 
 GET /api/v1/tickets/buscar/1 HTTP/1.1
-Host: localhost:8080
+Host: localhost:8082
 Content-Type: application/json
 
 
 ### Update a ticket by ID
-PATCH http://localhost:8080/api/v1/tickets/mudar/1?status=RESOLVED
+PATCH http://localhost:8082/api/v1/tickets/mudar/1?status=RESOLVED
 Content-Type: application/json
-Host: localhost:8080
+Host: localhost:8082
 

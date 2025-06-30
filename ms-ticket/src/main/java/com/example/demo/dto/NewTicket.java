@@ -2,8 +2,6 @@ package com.example.demo.dto;
 
 import java.util.List;
 
-import com.example.demo.model.entity.Profile;
-
 import jakarta.persistence.criteria.CriteriaBuilder.In;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

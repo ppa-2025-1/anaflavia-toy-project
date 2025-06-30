@@ -2,13 +2,19 @@
 ### Get all users
 
 GET /api/v1/users HTTP/1.1
-Host: localhost:8080
+Host: localhost:8081
+Accept: application/json
+
+### Get a User by ID
+
+GET /api/v1/users/1 HTTP/1.1
+Host: localhost:8081
 Accept: application/json
 
 ### Create a new User
 
 POST /api/v1/users HTTP/1.1
-Host: localhost:8080
+Host: localhost:8081
 Content-Type: application/json
 
 {
@@ -25,7 +31,7 @@ Content-Type: application/json
 ### Tenta criar um usuário inválido
 
 POST /api/v1/users HTTP/1.1
-Host: localhost:8080
+Host: localhost:8081
 Content-Type: application/json
 
 {
